@@ -9,8 +9,8 @@ SLAM PROJECT
 
 GROUP 2:
   - Víctor Mira Ramírez   800803577   vmirara@siue.edu
-  - 
-  - 
+  - Tyler Mowen
+  - Alex Karnezis         800694442   akarnez@siue.edu
 
 """
 #####################################
