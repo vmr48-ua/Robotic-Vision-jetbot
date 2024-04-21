@@ -1,1 +1,14 @@
-.a
+# Robotic-Vision-jetbot
+Jetbot project for Robotic Vision (ME 462)
+By: Tyler Mowen, Alex Karnezis, Victor Mira Ramirez
+
+## Manual Mode
+In order to win manual mode, a more intuitive control scheme seemed like an ideal approach. To that end, we developed a control scheme where forward and back controlled speed and left and right controlled direction rather than the default two motor speed only control. Our method involved using two scripts - a client run on a separate computer and the server run on the jetbot. The client received and interpreted signals from the controller and sent commands to the server jetbot which controlled the motor. The jetbot did not interface directly with the controller at all. Manual mode went well, with our control scheme allowing for fast and intuitive control. One weakness with our setup is that weak wifi lead to high latency, and to get around that we used our own wifi hotspot. However, the program is lightweight enough that we were able to run the client on an android phone. A bluetooth connection with the server would have been better, allowing for lower latency and removing the necessity of having a client at all.
+## Autonomous Mode
+The values used were:
+  - Speed gain: 0.16
+  - Steerenig gain: 0.05
+  - Steering KD: 0.32
+  - Steering bias: 0.02
+    
+Our strategy for winning the race was to be able to actually complete the race autonomously. We weren't able to do much tweaking and fine tuning - most of our tuning involved tweaking the speed and steering gains to get autonomous operation with minimal collisions. There were many challenges involved with getting the autonomous operation working. Initially, we believed our SD card was too small for the dataset and got a different card. We then collected the data and tried to train the neural network, but the bot turned off in the middle of training. Multiple approaches were tried to get the training going without success. Then, our SD card was lost so we strted using the original SD card and it did successfully train and we had some success with that version. After that, our entire bot was lost, and the third dataset was collected. This dataset also lead to the bot shutting off mid-training, so the training was done on a laptop. Ultimately, we decided to scrap that set and create a fourth dataset which was trained on the laptop. Our jetbot ended up being able to do the job, even if relatively slowly and with some collision issues. If we had another chance at this, we would take the bot home so it isn't lost or stolen, and run the training on a laptop or PC from the beginning. This would have allowed us to spend vastly less time troubleshooting basic operations and more time perfecting our dataset and model. Creating a program to mark the photos in the dataset based on the click locations for review would also be helpful in curating the dataset by making it easier to visualize what might be problematic photos.
