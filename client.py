@@ -5,22 +5,31 @@ import time,errno,atexit
 
 """
 Robotic Vision ME462 SIUE
-SLAM PROJECT
+JETBOT PROJECT
 
 GROUP 2:
   - Víctor Mira Ramírez   800803577   vmirara@siue.edu
-  - Tyler Mowen           800607604   tmowen@siue.edu
-  - Alex Karnezis         800694442   akarnez@siue.edu
-
+  - 
+  - 
 """
 #####################################
 #           EXIT GUARD              #
 #####################################
 @atexit.register
 def end_connection() -> None:
-    send(0,0)
-    client_socket.send(command='exit')
-    client_socket.close()
+    try:
+        send(0,0)
+    except:
+        pass
+    try:
+        client_socket.send(command='exit')
+    except:
+        pass
+    try:
+        client_socket.close()
+        print('Connection Ended')
+    except:
+        print('Connection could not be ended')
 
 #####################################
 #           NETWORKING              #
@@ -46,7 +55,7 @@ def send(L:float=0,R:float=0,command=None) -> None: # void method sending data t
 
     try: # try sending data without network pipe jamming
         client_socket.send(data.encode())
-        print(data.decode())
+        print(data)
     except IOError as e:
         if e.errno == errno.EPIPE:
             pass
@@ -78,8 +87,9 @@ def main() -> None:
     ########################################
 
     # Local ip of the server
-    HOST = '192.168.28.187'  
+    HOST = '192.168.1.13'  
     PORT = '8080'
+    global client_socket
 
     # start connection inside a try block so as to debug in case the server is down
     try:
@@ -104,25 +114,24 @@ def main() -> None:
                 stop = True
             if event.type == pygame.JOYBUTTONDOWN and event.button == 4:
                 stop = False
-            if event.type == pygame.JOYBUTTONDOWN and event.button == 0: #trigger
-                send(command='camera')
             if event.type == pygame.JOYBUTTONDOWN and event.button == 2:
                 steer_lock = True
             if event.type == pygame.JOYBUTTONUP and event.button == 2:
                 steer_lock = False
                 
         if running and not(stop):
-            ax0 = controller.get_axis(0)  #i
-            ax1 = -controller.get_axis(1) #j
-            ax2 = controller.get_axis(2) #power
+            ax0: float = controller.get_axis(0)  #i
+            ax1: float = -controller.get_axis(1) #j
+            ax2: float = controller.get_axis(2) #power
 
-            power = (controller.get_axis(2)+1)/2 #global power to the motors, can be attached to ax2
-            turn_power = 1-power + 0.3 #global turning power (max recommended 0.5)
-            time.sleep(0.01) #necessary to avoid network jamming (could be finetuned)
+            power: float = (ax2+1)/2 #global power to the motors, can be attached to ax2
+            turn_power: float = 0.3 # global turning power (max recommended 0.5)
+            time.sleep(0.01) # necessary to avoid network jamming (could be finetuned)
     
             # ACTUAL LOGIC
             if not(steer_lock):
-                motorL,motorR = 0,0
+                motorL: float = 0.
+                motorR: float = 0.
             if np.abs(ax1) > 0.05 and not(steer_lock):
                 motorL = power*ax1
                 motorR = power*ax1
